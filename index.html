@@ -19,7 +19,7 @@
     * {
       box-sizing: border-box;
     }
-<!-- rebuild -->
+
     body {
       margin: 0;
       min-height: 100vh;
@@ -159,6 +159,26 @@
       line-height: 1.35;
     }
 
+    .editable {
+      outline: none;
+      min-height: 34px;
+      cursor: text;
+      white-space: pre-wrap;
+    }
+
+    .editable:focus {
+      background: rgba(248, 232, 232, 0.55);
+      border-radius: 10px;
+      padding: 4px 6px;
+      margin: -4px -6px;
+    }
+
+    .editable:empty::before {
+      content: "Click to write...";
+      color: rgba(154, 129, 123, 0.65);
+      font-style: italic;
+    }
+
     .toggle-row {
       margin-top: 14px;
       display: flex;
@@ -223,17 +243,23 @@
     <div class="intention-strip" id="detailsPanel">
       <div class="mini-card">
         <span class="mini-label">Intention</span>
-        <span class="mini-text">Be consistent, not perfect.</span>
+        <div class="mini-text editable" contenteditable="true" data-key="weeklyIntention">
+Be consistent, not perfect.
+        </div>
       </div>
 
       <div class="mini-card">
         <span class="mini-label">Focus</span>
-        <span class="mini-text">Choose the few things that move life forward.</span>
+        <div class="mini-text editable" contenteditable="true" data-key="weeklyFocus">
+Choose the few things that move life forward.
+        </div>
       </div>
 
       <div class="mini-card">
         <span class="mini-label">Energy</span>
-        <span class="mini-text">Plan softly. Leave breathing room.</span>
+        <div class="mini-text editable" contenteditable="true" data-key="weeklyEnergy">
+Plan softly. Leave breathing room.
+        </div>
       </div>
     </div>
 
@@ -300,6 +326,27 @@
       toggleDetails.textContent = detailsPanel.classList.contains("show")
         ? "hide weekly intention −"
         : "show weekly intention +";
+    });
+
+    document.querySelectorAll(".editable").forEach((field) => {
+      const key = field.dataset.key;
+      const saved = localStorage.getItem(key);
+
+      if (saved) {
+        field.textContent = saved;
+      } else {
+        field.textContent = field.textContent.trim();
+      }
+
+      field.addEventListener("input", () => {
+        localStorage.setItem(key, field.textContent.trim());
+      });
+
+      field.addEventListener("paste", (event) => {
+        event.preventDefault();
+        const text = event.clipboardData.getData("text/plain");
+        document.execCommand("insertText", false, text);
+      });
     });
 
     updateRange();
