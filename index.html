@@ -7,65 +7,72 @@
 
   <style>
     :root {
-      --bg: #fffdfb;
+      --bg: #fffaf8;
+      --card: #ffffff;
       --ink: #4b342f;
       --muted: #9a817b;
       --pink: #d98999;
-      --soft-pink: #f8e8e8;
+      --soft-pink: #f9eeee;
       --border: #ead8d3;
-      --shadow: rgba(119, 87, 78, 0.08);
+      --shadow: rgba(119, 87, 78, 0.06);
     }
 
     * {
       box-sizing: border-box;
     }
 
+    html,
     body {
       margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
+      padding: 0;
+      width: 100%;
       background: transparent;
       font-family: Georgia, "Times New Roman", serif;
       color: var(--ink);
     }
 
+    body {
+      overflow: hidden;
+    }
+
     .weekly-widget {
-      width: min(980px, 100%);
-      padding: 22px 26px;
+      width: 100%;
+      max-width: none;
+      padding: 22px 24px;
       border: 1px solid var(--border);
       border-radius: 22px;
-      background:
-        radial-gradient(circle at top left, rgba(248, 232, 232, 0.9), transparent 34%),
-        linear-gradient(135deg, rgba(255, 253, 251, 0.96), rgba(255, 248, 247, 0.86));
-      box-shadow: 0 16px 40px var(--shadow);
+      background: var(--bg);
+      box-shadow: 0 10px 28px var(--shadow);
     }
 
     .top-row {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: space-between;
-      gap: 24px;
+      gap: 20px;
+      width: 100%;
     }
 
     .title-block {
-      min-width: 240px;
+      flex: 1;
+      min-width: 180px;
     }
 
     .section-title {
       margin: 0;
       color: var(--pink);
-      font-size: clamp(24px, 3vw, 36px);
-      letter-spacing: 0.08em;
+      font-size: clamp(23px, 4vw, 34px);
+      letter-spacing: 0.07em;
       font-weight: 500;
       font-style: italic;
       line-height: 1;
+      white-space: nowrap;
     }
 
     .subtitle {
       margin: 9px 0 0;
       color: var(--muted);
-      font-size: 14px;
+      font-size: 13px;
       font-style: italic;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
@@ -74,7 +81,7 @@
       display: flex;
       align-items: center;
       justify-content: flex-end;
-      gap: 12px;
+      gap: 9px;
       flex-wrap: wrap;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: var(--ink);
@@ -83,91 +90,87 @@
     .nav-btn,
     .today-btn {
       border: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.72);
+      background: var(--card);
       color: var(--ink);
       border-radius: 999px;
-      height: 32px;
-      padding: 0 12px;
+      height: 30px;
+      padding: 0 11px;
       cursor: pointer;
-      transition: transform 0.16s ease, background 0.16s ease, border-color 0.16s ease;
-      box-shadow: 0 8px 18px rgba(119, 87, 78, 0.05);
+      transition: background 0.16s ease, border-color 0.16s ease, transform 0.16s ease;
+      box-shadow: 0 5px 14px rgba(119, 87, 78, 0.04);
     }
 
     .nav-btn {
-      width: 32px;
+      width: 30px;
       padding: 0;
-      font-size: 18px;
+      font-size: 17px;
       line-height: 1;
     }
 
     .today-btn {
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 600;
       letter-spacing: 0.02em;
     }
 
     .nav-btn:hover,
     .today-btn:hover {
-      transform: translateY(-1px);
       background: var(--soft-pink);
-      border-color: #e0bdc3;
+      border-color: #dfc0c5;
+      transform: translateY(-1px);
     }
 
     .date-range {
-      min-width: 155px;
+      min-width: 145px;
       text-align: center;
-      font-size: 14px;
+      font-size: 13px;
       letter-spacing: 0.03em;
       color: var(--ink);
     }
 
     .intention-strip {
       margin-top: 18px;
-      display: none;
+      display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 10px;
       padding-top: 16px;
-      border-top: 1px solid rgba(234, 216, 211, 0.75);
+      border-top: 1px solid rgba(234, 216, 211, 0.85);
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
-    .intention-strip.show {
-      display: grid;
-    }
-
     .mini-card {
-      border: 1px solid rgba(234, 216, 211, 0.9);
+      border: 1px solid rgba(234, 216, 211, 0.95);
       border-radius: 16px;
-      background: rgba(255, 255, 255, 0.55);
+      background: rgba(255, 255, 255, 0.7);
       padding: 12px 14px;
-      min-height: 58px;
+      min-height: 72px;
     }
 
     .mini-label {
       display: block;
       color: var(--pink);
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 700;
-      letter-spacing: 0.09em;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      margin-bottom: 5px;
+      margin-bottom: 6px;
     }
 
     .mini-text {
       color: var(--ink);
       font-size: 13px;
-      line-height: 1.35;
+      line-height: 1.4;
     }
 
     .editable {
       outline: none;
-      min-height: 34px;
+      min-height: 36px;
       cursor: text;
       white-space: pre-wrap;
     }
 
     .editable:focus {
-      background: rgba(248, 232, 232, 0.55);
+      background: var(--soft-pink);
       border-radius: 10px;
       padding: 4px 6px;
       margin: -4px -6px;
@@ -179,32 +182,15 @@
       font-style: italic;
     }
 
-    .toggle-row {
-      margin-top: 14px;
-      display: flex;
-      justify-content: flex-end;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    }
-
-    .toggle-details {
-      border: 0;
-      background: transparent;
-      color: var(--muted);
-      font-size: 12px;
-      cursor: pointer;
-      padding: 4px 2px;
-    }
-
-    @media (max-width: 680px) {
+    @media (max-width: 720px) {
       .weekly-widget {
         padding: 18px;
         border-radius: 18px;
       }
 
       .top-row {
-        align-items: flex-start;
         flex-direction: column;
-        gap: 16px;
+        gap: 14px;
       }
 
       .controls {
@@ -214,10 +200,14 @@
 
       .date-range {
         text-align: left;
-        min-width: 140px;
+        min-width: 135px;
       }
 
-      .intention-strip.show {
+      .section-title {
+        white-space: normal;
+      }
+
+      .intention-strip {
         grid-template-columns: 1fr;
       }
     }
@@ -236,42 +226,30 @@
         <button class="nav-btn" id="previousWeek" aria-label="Previous week">‹</button>
         <div class="date-range" id="dateRange">11 – 17 May 2026</div>
         <button class="nav-btn" id="nextWeek" aria-label="Next week">›</button>
-        <button class="today-btn" id="thisWeek">This week ▾</button>
+        <button class="today-btn" id="thisWeek">This week</button>
       </div>
     </div>
 
-    <div class="intention-strip" id="detailsPanel">
+    <div class="intention-strip">
       <div class="mini-card">
         <span class="mini-label">Intention</span>
-        <div class="mini-text editable" contenteditable="true" data-key="weeklyIntention">
-Be consistent, not perfect.
-        </div>
+        <div class="mini-text editable" contenteditable="true" data-key="weeklyIntention">Be consistent, not perfect.</div>
       </div>
 
       <div class="mini-card">
         <span class="mini-label">Focus</span>
-        <div class="mini-text editable" contenteditable="true" data-key="weeklyFocus">
-Choose the few things that move life forward.
-        </div>
+        <div class="mini-text editable" contenteditable="true" data-key="weeklyFocus">Choose the few things that move life forward.</div>
       </div>
 
       <div class="mini-card">
         <span class="mini-label">Energy</span>
-        <div class="mini-text editable" contenteditable="true" data-key="weeklyEnergy">
-Plan softly. Leave breathing room.
-        </div>
+        <div class="mini-text editable" contenteditable="true" data-key="weeklyEnergy">Plan softly. Leave breathing room.</div>
       </div>
-    </div>
-
-    <div class="toggle-row">
-      <button class="toggle-details" id="toggleDetails">show weekly intention +</button>
     </div>
   </section>
 
   <script>
     const dateRange = document.getElementById("dateRange");
-    const detailsPanel = document.getElementById("detailsPanel");
-    const toggleDetails = document.getElementById("toggleDetails");
 
     function getMonday(date) {
       const d = new Date(date);
@@ -320,22 +298,12 @@ Plan softly. Leave breathing room.
       updateRange();
     });
 
-    toggleDetails.addEventListener("click", () => {
-      detailsPanel.classList.toggle("show");
-
-      toggleDetails.textContent = detailsPanel.classList.contains("show")
-        ? "hide weekly intention −"
-        : "show weekly intention +";
-    });
-
     document.querySelectorAll(".editable").forEach((field) => {
       const key = field.dataset.key;
       const saved = localStorage.getItem(key);
 
       if (saved) {
         field.textContent = saved;
-      } else {
-        field.textContent = field.textContent.trim();
       }
 
       field.addEventListener("input", () => {
